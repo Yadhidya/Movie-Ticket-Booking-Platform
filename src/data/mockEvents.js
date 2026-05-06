@@ -1,0 +1,80 @@
+export const mockEvents = [
+  {
+    id: '1',
+    title: 'Leo',
+    category: 'Action',
+    date: 'Now Showing',
+    venue: 'PVR Cinemas',
+    price: 200,
+    image: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=800&q=80',
+    description: 'A high-octane action thriller featuring intense fight sequences and a gripping storyline.',
+    organizer: 'Lokesh Cinematic Universe',
+    availableTickets: 120,
+    bookedSeats: ['A1', 'A2', 'C4']
+  },
+  {
+    id: '2',
+    title: 'Jailer',
+    category: 'Action/Drama',
+    date: 'Now Showing',
+    venue: 'INOX',
+    price: 180,
+    image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=800&q=80',
+    description: 'A retired jailer takes matters into his own hands in this mass entertainer.',
+    organizer: 'Sun Pictures',
+    availableTickets: 100,
+    bookedSeats: []
+  },
+  {
+    id: '3',
+    title: 'Interstellar',
+    category: 'Sci-Fi',
+    date: 'Re-release',
+    venue: 'IMAX',
+    price: 250,
+    image: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=800&q=80',
+    description: 'A journey through space and time to save humanity.',
+    organizer: 'Warner Bros',
+    availableTickets: 80,
+    bookedSeats: ['B1', 'B2', 'B3']
+  },
+  {
+    id: '4',
+    title: 'Avengers: Endgame',
+    category: 'Superhero',
+    date: 'Special Screening',
+    venue: 'PVR IMAX',
+    price: 300,
+    image: 'https://images.unsplash.com/photo-1505685296765-3a2736de412f?auto=format&fit=crop&w=800&q=80',
+    description: 'The epic conclusion to the Infinity Saga.',
+    organizer: 'Marvel Studios',
+    availableTickets: 150,
+    bookedSeats: []
+  },
+  {
+    id: '5',
+    title: 'RRR',
+    category: 'Action/Drama',
+    date: 'Now Showing',
+    venue: 'AGS Cinemas',
+    price: 220,
+    image: 'https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=800&q=80',
+    description: 'A fictional story about two legendary revolutionaries.',
+    organizer: 'DVV Entertainment',
+    availableTickets: 90,
+    bookedSeats: []
+  },
+  {
+    id: '6',
+    title: 'KGF Chapter 2',
+    category: 'Action',
+    date: 'Now Showing',
+    venue: 'SPI Cinemas',
+    price: 200,
+    image: 'https://images.unsplash.com/photo-1497032205916-ac775f0649ae?auto=format&fit=crop&w=800&q=80',
+    description: 'The rise of Rocky continues in this blockbuster sequel.',
+    organizer: 'Hombale Films',
+    availableTickets: 110,
+    bookedSeats: ['C1', 'C2']
+  }
+];
