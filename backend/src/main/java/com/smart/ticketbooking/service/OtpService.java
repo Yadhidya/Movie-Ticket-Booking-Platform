@@ -1,24 +1,30 @@
 package com.smart.ticketbooking.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class OtpService {
 
-    @Autowired
-    private JavaMailSender mailSender;
-
+    private final JavaMailSender mailSender;
     private final ConcurrentHashMap<String, OtpData> otpStorage = new ConcurrentHashMap<>();
+    private final SecureRandom secureRandom = new SecureRandom();
+
+    // Constructor injection preferred over field @Autowired
+    public OtpService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
     public void generateAndSendOtp(String email) {
-        String otp = String.format("%06d", new Random().nextInt(1000000));
+        // Secure random generation prevents predictive pattern attacks
+        int code = secureRandom.nextInt(1000000);
+        String otp = String.format("%06d", code);
         
         OtpData otpData = new OtpData(otp, LocalDateTime.now().plusMinutes(5));
         otpStorage.put(email, otpData);
@@ -27,6 +33,7 @@ public class OtpService {
         message.setTo(email);
         message.setSubject("Your OTP for MovieHub Registration");
         message.setText("Your OTP is: " + otp + "\nIt will expire in 5 minutes.");
+        
         mailSender.send(message);
     }
 
@@ -35,27 +42,29 @@ public class OtpService {
         if (otpData == null) {
             return false;
         }
-        if (otpData.getExpiryTime().isBefore(LocalDateTime.now())) {
+
+        // Token has expired
+        if (otpData.expiryTime().isBefore(LocalDateTime.now())) {
             otpStorage.remove(email);
             return false;
         }
-        if (otpData.getOtp().equals(otp)) {
+
+        // Matches valid token
+        if (otpData.otp().equals(otp)) {
             otpStorage.remove(email);
             return true;
         }
+
         return false;
     }
 
-    private static class OtpData {
-        private final String otp;
-        private final LocalDateTime expiryTime;
-
-        public OtpData(String otp, LocalDateTime expiryTime) {
-            this.otp = otp;
-            this.expiryTime = expiryTime;
-        }
-
-        public String getOtp() { return otp; }
-        public LocalDateTime getExpiryTime() { return expiryTime; }
+    // Evicts dead cache pairs every 5 minutes to prevent long-term memory leaks
+    @Scheduled(fixedRate = 300000)
+    public void cleanExpiredOtps() {
+        LocalDateTime now = LocalDateTime.now();
+        otpStorage.entrySet().removeIf(entry -> entry.getValue().expiryTime().isBefore(now));
     }
+
+    // Using Java Record for cleaner boilerplate code
+    private record OtpData(String otp, LocalDateTime expiryTime) {}
 }
